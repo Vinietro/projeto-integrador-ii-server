@@ -80,7 +80,7 @@ module.exports.getUserByUsername = async (req,res) => {
 
 module.exports.updateUserDetails = async (req,res) => {
     try{
-        const user = await User.findByPk(req.user.username)
+        const user = await User.findByPk(req.body.username)
 
         if(!user){
             res.status(401)
@@ -88,21 +88,21 @@ module.exports.updateUserDetails = async (req,res) => {
         }
             
         
-        if(req.body.user){
-            const name = req.body.user.name ? req.body.user.name : user.name
-            const image = req.body.user.image ? req.body.user.image : user.image
+        if(req.body){
+            const name = req.body.name ? req.body.name : user.name
+            const image = req.body.image ? req.body.image : user.image
             let password = user.password
-            if(req.body.user.password)
-                password = await hashPassword(req.body.user.password)
+            if(req.body.password)
+                password = await hashPassword(req.body.password)
 
             const updatedUser = await user.update({name,image,password})
             delete updatedUser.dataValues.password
             updatedUser.dataValues.token = req.header('Authorization').split(' ')[1]
-            res.json(updatedUser)
+            res.json({user: updatedUser})
         }else{
             delete user.dataValues.password
             user.dataValues.token = req.header('Authorization').split(' ')[1]
-            res.json(user)
+            res.json({user})
         }
         
     }catch(e){

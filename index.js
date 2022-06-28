@@ -21,7 +21,7 @@ app.use(cors({credentials: true, origin: true}))
 User.hasMany(Product,{onDelete: 'CASCADE'})
 Product.belongsTo(User)
 
-Product.belongsToMany(Ingredient,{through: 'ProductIngredients', uniqueKey: 'id', targetKey:'id', foreignKey:'productId', timestamps:false})
+Product.belongsToMany(Ingredient,{through: 'ProductIngredients', uniqueKey: 'name', targetKey:'name', foreignKey:'productId', timestamps:false})
 Ingredient.belongsToMany(Product,{through: 'ProductIngredients', uniqueKey: 'id', targetKey:'id', foreignKey:'ingredientId', timestamps:false})
 
 const sync = async () => await sequelize.sync({alter:true})

@@ -10,7 +10,7 @@ module.exports.authByToken = async (req,res,next) => {
         })
     }
 
-    if(authHeader[0] !== 'Bearer')
+    if(authHeader[0] !== 'Token')
         return res.status(401).json({
             errors: { body: [ 'Authorization failed', 'Token missing' ] }
         })
